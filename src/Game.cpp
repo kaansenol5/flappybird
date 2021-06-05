@@ -17,7 +17,7 @@ Game::Game(){
     background = new ScrollingBackground;
     player = new Bird;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    TTF_Font* font = TTF_OpenFont("assets/font.ttf", 128);
+    font = TTF_OpenFont("assets/font.ttf", 32);
     SDL_Surface* tmp_surface = TTF_RenderText_Blended(font, "GAME OVER", {255, 0, 0, 0});
     game_over_text = SDL_CreateTextureFromSurface(Game::renderer, tmp_surface);
     SDL_FreeSurface(tmp_surface);
@@ -47,8 +47,8 @@ void Game::update(unsigned long long frame_count){
     if(frame_count % 60 == 0){
         poles.push_back(new Pole);
     }
-    //cleanup_poles();
     check_collisions();
+    cleanup_poles();
 }
 
 void Game::handle_events(){
@@ -72,6 +72,7 @@ void Game::handle_events(){
                 if(is_over){
                     is_over = false;
                     poles.clear();
+                    score = 0;
                     player->dest_rect = {100, 100, 64, 64};
                 }
                 break;
@@ -111,13 +112,20 @@ void Game::render(){
         SDL_RenderCopy(Game::renderer, game_over_text, NULL, &rect);
         SDL_RenderCopy(Game::renderer, enter_to_continue_text, NULL, &rect1);
     }
+    std::string scoretext = "Score: " + std::to_string(score);
+    SDL_Surface* tmp_surface = TTF_RenderText_Blended(font, scoretext.c_str(), {0,0,0,0});
+    SDL_Texture* score_count = SDL_CreateTextureFromSurface(renderer, tmp_surface);
+    SDL_FreeSurface(tmp_surface);
+    SDL_Rect score_count_loc = {40, 40, 400, 200};
+    SDL_RenderCopy(renderer, score_count, NULL, &score_count_loc);
+    SDL_DestroyTexture(score_count);
     SDL_RenderPresent(renderer);
 }
 
 void Game::cleanup_poles(){
     for(unsigned i = 0; i < poles.size(); i++){
-        if(poles[i]->top_rect.x < 0){
-            delete poles[i];
+        if(poles[i]->top_rect.x < 99){
+            poles.erase(poles.begin()+i);
         }
     }
 }
@@ -127,6 +135,9 @@ void Game::check_collisions(){
         if(player->dest_rect.x > poles[i]->bottom_rect.x && player->dest_rect.x < poles[i]->bottom_rect.x + poles[i]->bottom_rect.w){
             if(player->dest_rect.y > poles[i]->bottom_rect.y || player->dest_rect.y < poles[i]->top_rect.y){
                 is_over = true;
+            }
+            else{
+                score++;
             }
         }
     }

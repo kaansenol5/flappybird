@@ -3,6 +3,7 @@
 #include "Bird.hpp"
 #include "Pole.hpp"
 #include <vector>
+#include <SDL2/SDL_ttf.h>
 
 class Game{
 public:
@@ -15,6 +16,8 @@ public:
     bool is_over = false; // means the player did not lose yet
     static SDL_Renderer* renderer;
 private:
+    TTF_Font* font;
+    unsigned score = 0;
     void cleanup_poles();
     void check_collisions();
     static SDL_Window* window;

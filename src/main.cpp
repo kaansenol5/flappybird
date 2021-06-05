@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <time.h>
 
 int main(int argc, char* argv[]){
     Game game;
@@ -7,6 +8,7 @@ int main(int argc, char* argv[]){
     unsigned long frame_start;
     int frame_time;
     unsigned long long frame_counter = 0;
+    srand(time(NULL));
     while(game.is_running){
         frame_start = SDL_GetTicks();
         game.render();
