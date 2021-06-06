@@ -8,6 +8,7 @@ Space key or mouse click to jump
 
 X key to trigger free-fall
 
+if you hit a green wall or get the bird out of the screen it is a game over
 
 # Dependencies
 
