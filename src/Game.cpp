@@ -133,7 +133,7 @@ void Game::cleanup_poles(){
 void Game::check_collisions(){
     for(unsigned i = 0; i < poles.size(); i++){
         if(player->dest_rect.x > poles[i]->bottom_rect.x && player->dest_rect.x < poles[i]->bottom_rect.x + poles[i]->bottom_rect.w){
-            if(player->dest_rect.y > poles[i]->bottom_rect.y || player->dest_rect.y < poles[i]->top_rect.y){
+            if(player->dest_rect.y > poles[i]->bottom_rect.y || player->dest_rect.y < poles[i]->top_rect.h){
                 is_over = true;
             }
             else{
