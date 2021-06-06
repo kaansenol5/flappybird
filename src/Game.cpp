@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include "config.h"
 
 SDL_Renderer* Game::renderer;
 SDL_Window* Game::window;
@@ -44,7 +45,7 @@ void Game::update(unsigned long long frame_count){
     for(unsigned i = 0; i < poles.size(); i++){
         poles[i] -> update();
     }
-    if(frame_count % 60 == 0){
+    if(frame_count % POLE_SPAWN_RATE == 0){
         poles.push_back(new Pole);
     }
     check_collisions();
@@ -111,6 +112,12 @@ void Game::render(){
         SDL_Rect rect1 = {0, 860, 1920, 200};
         SDL_RenderCopy(Game::renderer, game_over_text, NULL, &rect);
         SDL_RenderCopy(Game::renderer, enter_to_continue_text, NULL, &rect1);
+    }
+    if(score > 50){
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 50);
+        SDL_Rect rect = {0, 0, 1920, 1080};
+        SDL_RenderFillRect(renderer, &rect);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     }
     std::string scoretext = "Score: " + std::to_string(score);
     SDL_Surface* tmp_surface = TTF_RenderText_Blended(font, scoretext.c_str(), {0,0,0,0});

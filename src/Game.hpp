@@ -17,7 +17,7 @@ public:
     static SDL_Renderer* renderer;
 private:
     TTF_Font* font;
-    unsigned score = 0;
+    unsigned score = 49;
     void cleanup_poles();
     void check_collisions();
     static SDL_Window* window;

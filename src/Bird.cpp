@@ -35,5 +35,5 @@ void Bird::update(){
 
 void Bird::jump(){
     is_jumping = true;
-    dest_rect.y -= 8;
+    dest_rect.y -= 16;
 }
