@@ -17,7 +17,7 @@ Game::Game(){
     background = new ScrollingBackground;
     player = new Bird;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    font = TTF_OpenFont("assets/font.ttf", 32);
+    font = TTF_OpenFont("assets/font.ttf", 1024);
     SDL_Surface* tmp_surface = TTF_RenderText_Blended(font, "GAME OVER", {255, 0, 0, 0});
     game_over_text = SDL_CreateTextureFromSurface(Game::renderer, tmp_surface);
     SDL_FreeSurface(tmp_surface);
@@ -140,5 +140,8 @@ void Game::check_collisions(){
                 score++;
             }
         }
+    }
+    if(player->dest_rect.y < -64 || player->dest_rect.y > 1080){
+        is_over = true;
     }
 }
